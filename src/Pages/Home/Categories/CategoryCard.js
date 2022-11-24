@@ -4,11 +4,11 @@ export default function CategoryCard({ category }) {
     const { category: name, img } = category;
     return (
         <div>
-            <div className='border rounded-lg md:max-w-[200px] max-w-[100px]'>
+            <div className='border hover:shadow-red-400 hover:cursor-pointer rounded-lg md:max-w-[200px] shadow max-w-[100px]'>
                 <div className='flex justify-center'>
-                    <img src={img} alt="" className='w-full  border-b-2' />
+                    <img src={img} alt="" className='w-full' />
                 </div>
-                <h3 className='text-center text-xs md:text-xl my-2 font-bold py-px md:py-2'>{name}</h3>
+                <h3 className='text-center text-xs md:text-xl  my-2 font-bold py-2'>{name}</h3>
             </div>
         </div>
     )

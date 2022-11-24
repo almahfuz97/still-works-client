@@ -17,10 +17,13 @@ export default function Categories() {
     if (error) return <h3>Error Occured: {error.message}</h3>
     return (
 
-        <div className='grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 mx-8 md:mx-32 mb-16'>
-            {
-                categories.map(category => <CategoryCard key={category._id} category={category}></CategoryCard>)
-            }
+        <div>
+            <h3 className='text-3xl text-center mb-12 font-bold'>Categories</h3>
+            <div className='grid grid-cols-3 justify-items-center gap-4 mx-4 md:mx-16  mb-16'>
+                {
+                    categories.map(category => <CategoryCard key={category._id} category={category}></CategoryCard>)
+                }
+            </div>
         </div>
 
     )
