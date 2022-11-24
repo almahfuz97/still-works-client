@@ -5,9 +5,9 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 
 export default function PrivateRoute({ children }) {
     const { user, loading } = useContext(AuthContext);
-    // const from = useLocation().state?.from?.pathname || '/home'
+    const from = useLocation().state?.from?.pathname || '/home'
 
     if (loading) return <Spinner />
-    if (!user?.uid) return <Navigate to='/login' replace></Navigate>
+    if (!user?.uid) return <Navigate to='/login' state={from} replace></Navigate>
     return children;
 }

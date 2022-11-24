@@ -55,7 +55,12 @@ export default function Register() {
                 }
                 saveUser(data, 1);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setSpin(false)
+                setErr(err.message);
+
+                console.log(err)
+            })
     }
 
     const saveUser = (data, google = 0) => {
@@ -82,7 +87,11 @@ export default function Register() {
                 setCreatedUserEmail(email);
                 setSpin(false);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setSpin(false)
+                console.log(err)
+
+            })
     }
 
     if (loading) return <Spinner />
@@ -90,24 +99,24 @@ export default function Register() {
     // if (token) return <Navigate to='/' />
     if (user?.uid) return <Navigate to='/' />
     return (
-        <div className='mt-16 mx-4'>
+        <div className='my-16 mx-4'>
             <div className='flex justify-center'>
                 <div className='w-96 shadow-lg -shadow-lg p-8 rounded-lg'>
                     <h3 className='text-center mb-9'>Register</h3>
                     <p>{err}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label className=' text-sm' htmlFor="fullName">Full Name</label> <br />
-                        <input type="text" placeholder="Full Name" className="input input-bordered w-full mb-3"
+                        <input type="text" placeholder="Full Name" className="border rounded-lg p-2 input input-bordered w-full mb-3"
                             {...register('fullName', { required: true })}
                         />
                         <p className=' text-red-500  text-xs'> {errors?.fullName && 'Full name is required!'} </p>
                         <label className=' text-sm' htmlFor="email">Email</label> <br />
-                        <input type="email" placeholder="Email" className="input input-bordered w-full mb-3"
+                        <input type="email" placeholder="Email" className="border rounded-lg p-2 input input-bordered w-full mb-3"
                             {...register('email', { required: true })}
                         />
                         <p className=' text-red-500  text-xs'> {errors?.email && 'Email is required'} </p>
                         <label htmlFor="password" className=' text-sm'>Password</label> <br />
-                        <input type="password" placeholder="Password" className="input input-bordered w-full"
+                        <input type="password" placeholder="Password" className="border rounded-lg p-2 input input-bordered w-full"
                             {...register('password', {
                                 required: true, minLength: {
                                     value: 6,
@@ -128,7 +137,7 @@ export default function Register() {
                         {
                             spin
                                 ? <div className='btn w-full mt-4'><div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
-                                : <input type="submit" className='btn w-full mt-4' value="Register" />
+                                : <input type="submit" className='border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 w-full mt-4' value="Register" />
 
                         }
 
@@ -139,7 +148,7 @@ export default function Register() {
                             <div className='mx-2'>Or</div>
                             <div className=' h-px w-1/3 bg-slate-500'></div>
                         </div>
-                        <div onClick={handleGoogle} className="btn btn-outline w-full mt-4">Sign In with Google</div>
+                        <div onClick={handleGoogle} className="border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 text-center w-full mt-4">Sign In with Google</div>
                     </form>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import 'react-day-picker/dist/style.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
