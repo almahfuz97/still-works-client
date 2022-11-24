@@ -15,6 +15,7 @@ export default function Register() {
     const { user, loading, providerLogin, createUser, updateUser } = useContext(AuthContext);
     const [createdUserEmail, setCreatedUserEmail] = useState('');
     const [email, setEmail] = useState()
+    const [spin, setSpin] = useState(false)
     const [err, setErr] = useState('')
     // const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
@@ -23,6 +24,9 @@ export default function Register() {
 
     const onSubmit = data => {
         setErr('')
+        setSpin(true);
+        console.log(data)
+
         createUser(data.email, data.password)
             .then(result => {
                 const userInfo = {
@@ -30,7 +34,7 @@ export default function Register() {
                 }
                 updateUser(userInfo)
                     .then(() => {
-                        saveUser(data.email, data.fullName);
+                        saveUser(data);
                         console.log(result.user)
                     })
                     .catch(err => console.log(err))
@@ -45,35 +49,48 @@ export default function Register() {
         providerLogin(provider)
             .then(res => {
                 console.log(res.user)
-                saveUser(res.user.email, res.user.displayName)
+                const data = {
+                    email: res.user.email,
+                    fullName: res.user.displayName
+                }
+                saveUser(data, 1);
             })
             .catch(err => console.log(err))
     }
 
-    const saveUser = (email, name) => {
-        fetch(`${process.env.REACT_APP_URL}/users`, {
+    const saveUser = (data, google = 0) => {
+
+        const role = google ? 'Buyer' : data.accType;
+        const userInfo = {
+            email: data.email,
+            name: data.fullName,
+            role,
+            isVerified: false
+        }
+        console.log(userInfo)
+
+        fetch(`${process.env.REACT_APP_url}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, name })
+            body: JSON.stringify(userInfo)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data)
                 setCreatedUserEmail(email);
+                setSpin(false);
             })
             .catch(err => console.log(err))
     }
-
-
 
     if (loading) return <Spinner />
     // both works
     // if (token) return <Navigate to='/' />
     if (user?.uid) return <Navigate to='/' />
     return (
-        <div className='lg:mt-36 mx-4'>
+        <div className='mt-16 mx-4'>
             <div className='flex justify-center'>
                 <div className='w-96 shadow-lg -shadow-lg p-8 rounded-lg'>
                     <h3 className='text-center mb-9'>Register</h3>
@@ -98,9 +115,23 @@ export default function Register() {
                                 }
                             })}
                         />
-                        <small>Forgot password?</small>
                         <p className=' text-red-500 text-xs'> {errors?.password && errors.password.message} </p>
-                        <input type="submit" className='btn w-full mt-4' value="Register" />
+
+                        <p className=' mt-6 mb-2 font-semibold'>Account Type:</p>
+                        <div className='flex items-center '>
+                            <input type="radio" {...register('accType')} defaultChecked value='Buyer' className=' mr-2 ' />
+                            <label htmlFor="" className=''>Buyer</label>
+                            <input type="radio" {...register('accType')} value='Seller' className=' mx-2 ' />
+                            <label htmlFor="" className=''>Seller</label>
+                        </div>
+
+                        {
+                            spin
+                                ? <div className='btn w-full mt-4'><div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
+                                : <input type="submit" className='btn w-full mt-4' value="Register" />
+
+                        }
+
                         <p className=' text-center text-xs mt-2'>Already have an account?
                             <Link to='/login'><span className='ml-2 text-green-700'>Login here?</span></Link></p>
                         <div className='flex justify-center items-center mt-4'>

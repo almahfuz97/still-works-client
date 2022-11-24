@@ -45,36 +45,45 @@ export default function Login() {
     const handleGoogle = () => {
         providerLogin(provider)
             .then(res => {
-                // setLoginEmail(res.user.email);
-                console.log(res.user.email)
-                saveUser(res.user.email, res.user.displayName)
+                console.log(res.user)
+                const data = {
+                    email: res.user.email,
+                    fullName: res.user.displayName
+                }
+                saveUser(data);
             })
             .catch(err => console.log(err))
     }
 
-    const saveUser = (email, name) => {
-        console.log(email, name)
-        fetch(`${process.env.REACT_APP_URL}/users`, {
+    const saveUser = (data) => {
+        const userInfo = {
+            email: data.email,
+            name: data.fullName,
+            role: 'Buyer',
+            isVerified: false
+        }
+        console.log(userInfo);
+
+        fetch(`${process.env.REACT_APP_url}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, name })
+            body: JSON.stringify(userInfo)
         })
             .then(res => res.json())
             .then(data => {
                 console.log(data)
-                setLoginEmail(email);
+                setLoginEmail('');
             })
             .catch(err => console.log(err))
     }
-
 
     console.log('baire')
     if (loading) return <Spinner />
     // if (spin) return <Spinner />
     // if (token) return <Navigate to={from} replace />
-    // if (user?.uid) return <Navigate to='/' />
+    if (user?.uid) return <Navigate to={from} replace={true} />
     return (
         <div className='lg:mt-36 mx-4'>
             <div className='flex justify-center'>
