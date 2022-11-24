@@ -1,6 +1,8 @@
+import DashboardLayout from "../../Layouts/DashboardLayout/DashboardLayout";
 import Login from "../../Pages/Authentication/Login/Login";
 import Register from "../../Pages/Authentication/Register/Register";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
+import PrivateRoute from "../PrivateRoute.js/PrivateRoute";
 
 const { createBrowserRouter } = require("react-router-dom");
 const { default: ErrorPage } = require("../../Components/ErrorPage/ErrorPage");
@@ -28,7 +30,11 @@ export const router = createBrowserRouter([
                 path: '/register',
                 element: <Register />
             },
-        ]
+        ],
+    },
+    {
+        path: '/dashboard',
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
 
     }
 ])
