@@ -3,9 +3,9 @@ import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import Spinner from '../../Components/Spinner/Spinner';
-import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
-import useToken from '../../hooks/useToken';
+import Spinner from '../../../Components/Spinner/Spinner';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+// import useToken from '../../hooks/useToken';
 // import googleLogin from '../Login/googleLogin';
 
 const provider = new GoogleAuthProvider();

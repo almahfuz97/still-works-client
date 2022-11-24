@@ -1,4 +1,5 @@
 import Login from "../../Pages/Authentication/Login/Login";
+import Register from "../../Pages/Authentication/Register/Register";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -22,7 +23,11 @@ export const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <Login />
-            }
+            },
+            {
+                path: '/register',
+                element: <Register />
+            },
         ]
 
     }
