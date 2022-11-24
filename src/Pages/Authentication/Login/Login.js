@@ -38,7 +38,7 @@ export default function Login() {
             .catch(err => {
                 setErr(err.message)
                 SetSpin(false)
-                console.log(err)
+                console.log('errrr', err)
             })
     }
 

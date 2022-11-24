@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
     }
     // sign in with email and pass
     const signIn = (email, pass) => {
-        return signInWithEmailAndPassword(email, pass);
+        return signInWithEmailAndPassword(auth, email, pass);
     }
     // update user profile
     const updateUser = (userInfo) => {
