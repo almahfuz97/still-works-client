@@ -43,7 +43,7 @@ export default function Navbar() {
                         className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
                     >
                         <NavLink
-                            to={"/stats"}
+                            to={"/login"}
                             className={({ isActive }) =>
                                 isActive
                                     ? "text-purple-400  ease duration-100"
