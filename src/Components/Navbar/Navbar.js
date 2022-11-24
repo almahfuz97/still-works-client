@@ -1,14 +1,27 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 // import logo from "../../logo192.png";
 
 export default function Navbar() {
+    const { user, loading, logOut } = useContext(AuthContext);
     const [toggleBurger, setToggleBurger] = useState(false);
+    const navigate = useNavigate();
     const handleBurger = () => {
         console.log(toggleBurger);
         setToggleBurger((prev) => !prev);
     };
 
+    const handleSignOut = () => {
+        logOut()
+            .then((result) => {
+                console.log(result)
+                navigate('/login')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
     return (
         <div>
             <nav className=" px-8 my-8 flex justify-between items-center">
@@ -27,6 +40,21 @@ export default function Navbar() {
                         className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
                     >
                         <NavLink
+                            to={"/home"}
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "text-purple-400  ease duration-100"
+                                    : "ease duration-100"
+                            }
+                        >
+                            Home
+                        </NavLink>{" "}
+                    </li>
+                    <li
+                        onClick={handleBurger}
+                        className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
+                    >
+                        <NavLink
                             to={"/blog"}
                             className={({ isActive }) =>
                                 isActive
@@ -37,22 +65,53 @@ export default function Navbar() {
                             Blog
                         </NavLink>{" "}
                     </li>
+                    {
+                        user?.uid ?
+                            <>
+                                <li
+                                    onClick={handleBurger}
+                                    className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
+                                >
+                                    <NavLink
+                                        to={"/dashboard"}
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? "text-purple-400  ease duration-100"
+                                                : "ease duration-100"
+                                        }
+                                    >
+                                        Dashboard
+                                    </NavLink>{" "}
+                                </li>
+                                <li
+                                    onClick={handleSignOut}
+                                    className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
+                                >
+                                    <NavLink
 
-                    <li
-                        onClick={handleBurger}
-                        className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
-                    >
-                        <NavLink
-                            to={"/login"}
-                            className={({ isActive }) =>
-                                isActive
-                                    ? "text-purple-400  ease duration-100"
-                                    : "ease duration-100"
-                            }
-                        >
-                            Login
-                        </NavLink>{" "}
-                    </li>
+                                    >
+                                        Sign Out
+                                    </NavLink>{" "}
+                                </li>
+                            </>
+                            :
+                            <li
+                                onClick={handleBurger}
+                                className="mr-6 hover:text-purple-400 text-yellow-600 mb-2"
+                            >
+                                <NavLink
+                                    to={"/login"}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "text-purple-400  ease duration-100"
+                                            : "ease duration-100"
+                                    }
+                                >
+                                    Login
+                                </NavLink>{" "}
+                            </li>
+                    }
+
 
                 </ul>
                 {/* making hamburger */}
