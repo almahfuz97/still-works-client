@@ -25,7 +25,7 @@ export default function DashboardLayout() {
         <div>
             <Navbar></Navbar>
             <div className='grid grid-cols-12 mx-12'>
-                <div className=' border hidden md:block md:col-span-4 lg:col-span-2'>
+                <div className=' border hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
                     <h3>My Orders</h3>
                     {
                         isLoading
@@ -33,7 +33,14 @@ export default function DashboardLayout() {
                             :
                             userInfo.role === 'Seller'
                                 ?
-                                <Link to='/dashboard/addproduct'>Add Product</Link>
+                                <>
+                                    <p>
+                                        <Link to='/dashboard/addproduct'>Add Product</Link>
+                                    </p>
+                                    <p>
+                                        <Link to='/dashboard/myProducts'>My Products</Link>
+                                    </p>
+                                </>
                                 :
                                 userInfo.role === 'admin'
                                     ?
@@ -43,7 +50,6 @@ export default function DashboardLayout() {
                 </div>
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
                     <Outlet />
-                    <h1>hi</h1>
                 </div>
             </div>
         </div>

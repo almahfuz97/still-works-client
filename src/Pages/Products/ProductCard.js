@@ -1,14 +1,20 @@
 import { async } from '@firebase/util';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Spinner from '../../Components/Spinner/Spinner';
 import Moment from 'react-moment';
 import moment from 'moment';
 import verifiedIcon from '../../assets/verified.png'
+import FormModal from '../../Components/Modals/FormModal/FormModal';
+import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 export default function ProductCard({ product }) {
-    const { img, originalPrice, resalePrice, condition, phone, location, description, purchaseYear, createdAt, availability, product_name, sellerName, sellerEmail, categoryName } = product;
+    const { img, originalPrice, resalePrice, condition, phone, location, description, purchaseYear, createdAt, availability, product_name, sellerName, sellerEmail, categoryName, _id } = product;
+    const { user } = useContext(AuthContext);
+    const [showModal, setShowModal] = useState(false);
+    const [alreadyBooked, setAlreadyBooked] = useState(false);
 
+    // REACT QUERY
     const { data: seller = [], isLoading } = useQuery({
         queryKey: ['users', sellerEmail],
         queryFn: async () => {
@@ -22,8 +28,11 @@ export default function ProductCard({ product }) {
         }
 
     })
-    console.log(product)
+    // days of use
     const used = Math.round((Date.now() - purchaseYear) / (1000 * 3600 * 24));
+    // product post time
+    const postedTime = moment.utc(createdAt).local().startOf('seconds').fromNow()
+
     let usedDays;
     if (used >= 365) {
         used = (used / 365).toFixed(2);
@@ -34,15 +43,25 @@ export default function ProductCard({ product }) {
         else usedDays = `${used} day`
     }
 
-    const postedTime = moment.utc(createdAt).local().startOf('seconds').fromNow()
-
-
-
-    console.log(used);
+    // book now click
+    const handleBookNow = (product) => {
+        setShowModal(!showModal);
+    }
 
     if (isLoading) return <Spinner />
     return (
         <div className='border rounded-lg '>
+            {
+                showModal &&
+                <FormModal
+                    showModal={showModal}
+                    setAlreadyBooked={setAlreadyBooked}
+                    setShowModal={setShowModal}
+                    product={product}
+                >
+
+                </FormModal>
+            }
             <div>
                 <img src={img} alt="" className='w-full' />
                 <div className='px-4'>
@@ -61,7 +80,18 @@ export default function ProductCard({ product }) {
                         <small className=' font-bold'>${resalePrice}</small><br />
                         <small className=' opacity-50'>Original Price: ${originalPrice}</small><br />
                         <small className=' text-sm'>Used: {usedDays}</small> <br />
-                        <button className='bg-green-500 text-white p-2 rounded-lg mt-2'>Book Now</button>
+                        {
+                            alreadyBooked ?
+                                <>
+                                    <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Booked</button>
+                                </>
+                                :
+                                user.email === sellerEmail
+                                    ?
+                                    <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Your Product</button>
+                                    :
+                                    <button onClick={() => handleBookNow(product)} className='bg-green-500 text-white p-2 rounded-lg mt-2'>Book Now</button>
+                        }
                         <p className=' text-end opacity-50'>{postedTime}</p>
                     </div>
                 </div>

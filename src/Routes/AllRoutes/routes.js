@@ -1,7 +1,9 @@
+import FormModal from "../../Components/Modals/FormModal/FormModal";
 import DashboardLayout from "../../Layouts/DashboardLayout/DashboardLayout";
 import Login from "../../Pages/Authentication/Login/Login";
 import Register from "../../Pages/Authentication/Register/Register";
 import AddProduct from "../../Pages/Dashboard/AddProduct/AddProduct";
+import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
 import Products from "../../Pages/Products/Products";
 import PrivateRoute from "../PrivateRoute.js/PrivateRoute";
@@ -37,6 +39,10 @@ export const router = createBrowserRouter([
                 element: <Products />,
                 loader: ({ params }) => fetch(`${process.env.REACT_APP_url}/category/${params.id}`)
             },
+            {
+                path: '/formModal',
+                element: <FormModal />,
+            },
         ],
     },
     {
@@ -46,6 +52,10 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/addproduct',
                 element: <AddProduct />
+            },
+            {
+                path: '/dashboard/myProducts',
+                element: <MyProducts />
             }
         ]
 
