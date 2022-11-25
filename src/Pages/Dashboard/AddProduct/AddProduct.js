@@ -1,10 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
+import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 import { registerVersion } from 'firebase/app'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast';
 import Spinner from '../../../Components/Spinner/Spinner';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider'
+
 // import addImg from '../../assets/imageUpload.png'
 // import useTitle from '../../hooks/useTitle';
 // import Spin from '../../shared/Spinner/Spin';
@@ -12,6 +16,7 @@ import Spinner from '../../../Components/Spinner/Spinner';
 
 export default function AddProduct() {
     const { register, handleSubmit, reset, formState, submittedData, formState: { errors } } = useForm();
+    const { user } = useContext(AuthContext);
     const [spinner, setSpinner] = useState(false);
     const [success, setSuccess] = useState('');
     const [showCalender, setShowCalender] = useState(false);
@@ -47,45 +52,15 @@ export default function AddProduct() {
     // }, [formState, submittedData, reset]);
 
     const onSubmit = data => {
-        console.log(process.env.REACT_APP_imgbb);
-
-        // console.log(selected);
-        // // setSpinner(true);
-        // console.log(new Date())
+        // setSpinner(true);
         // const difference = Math.round((new Date() - Date.parse(selected)) / (1000 * 3600 * 24));
-
-        // console.log(difference)
-        // const img = data.img[0];
-
-        // const productData = {
-        //     product_name: data.title,
-        //     description: data.description,
-        //     img,
-        //     originalPrice: data.originalPrice,
-        //     resalePrice: data.resalePrice,
-        //     condition: data.condition,
-        //     phone: data.phone,
-        //     location: data.location,
-        //     purchaseYear: Date.parse(selected),
-        //     createdAt: Date.now(),
-        //     categoryId: data.category,
-        //     availability: 'available'
-        // }
-
-        // console.log(img)
         const image = data.photo[0];
-
         const formData = new FormData();
-
-        console.log(image)
         const img = data.photo[0];
         formData.append('image', img);
         // console.log(formData[key])
 
-        for (const [key, value] of formData) {
-            console.log(key, value)
-        }
-
+        // save img to imgBB
         fetch(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_API}`, {
             method: 'POST',
             body: formData
@@ -94,40 +69,63 @@ export default function AddProduct() {
             .then(res => res.json())
             .then(imgData => {
                 console.log(imgData)
+                if (imgData.success) {
+                    const img = imgData.data.url;
+                    const productData = {
+                        sellerName: user.displayName,
+                        sellerEmail: user.email,
+                        product_name: data.title,
+                        description: data.description,
+                        img,
+                        originalPrice: data.originalPrice,
+                        resalePrice: data.resalePrice,
+                        condition: data.condition,
+                        phone: data.phone,
+                        location: data.location,
+                        purchaseYear: Date.parse(selected),
+                        createdAt: Date.now(),
+                        categoryId: data.category,
+                        availability: 'available'
+                    }
+                    saveProductToDatabase(productData);
+                } else {
+                    if (!imgData.success) {
+                        toast.error('Something went wrong!')
+                    }
+                }
             })
             .catch(err => console.log(err))
 
-        // return;
-        // fetch(`${process.env.REACT_APP_url}/addproduct`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify()
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         if (data.insertedId) {
-        //             setSuccess('0');
-        //         }
-        //         else {
-        //             setSuccess('1');
-        //         }
+    }
+    // add product to database function
+    const saveProductToDatabase = productData => {
+        fetch(`${process.env.REACT_APP_url}/addproduct`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.insertedId) {
+                    toast.success('Product added successfully!')
+                }
+                else {
 
-        //         setTimeout(() => {
-        //             setSuccess('');
-        //         }, 4000);
+                }
+                setTimeout(() => {
 
-        //         setSpinner(false);
-        //     })
-        //     .catch(err => {
-        //         setSpinner(false)
-        //         setSuccess('1');
-        //         console.log(err)
-        //     })
+                }, 4000);
 
-        // console.log()
+                setSpinner(false);
+            })
+            .catch(err => {
+                setSpinner(false)
+                toast.error(err.message)
+                console.log(err)
+            })
     }
 
     return (
