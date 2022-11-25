@@ -15,12 +15,13 @@ import { AuthContext } from '../../../Context/AuthProvider/AuthProvider'
 // import SuccesfulModal from '../../utils/Modals/SuccesfulModal';
 
 export default function AddProduct() {
-    const { register, handleSubmit, reset, formState, submittedData, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, watch, formState, submittedData, formState: { errors } } = useForm();
     const { user } = useContext(AuthContext);
     const [spinner, setSpinner] = useState(false);
     const [success, setSuccess] = useState('');
     const [showCalender, setShowCalender] = useState(false);
     const [selected, setSelected] = useState(new Date());
+    const [categoryName, setCategoryName] = useState();
 
     const { data: categories = [], isLoading, error } = useQuery({
         queryKey: ['categories'],
@@ -35,6 +36,8 @@ export default function AddProduct() {
             }
         }
     })
+
+
     const handleCalendar = data => {
         console.log(data)
         setSelected(data);
@@ -54,6 +57,16 @@ export default function AddProduct() {
     const onSubmit = data => {
         // setSpinner(true);
         // const difference = Math.round((new Date() - Date.parse(selected)) / (1000 * 3600 * 24));
+        const categoryId = data.category.split(',')[0]
+        const categoryName = data.category.split(',')[1]
+
+        console.log(categoryId, categoryName)
+        console.log(data)
+        if (categoryId === 'select') {
+            toast.error('You must select a category')
+            return;
+        }
+
         const image = data.photo[0];
         const formData = new FormData();
         const img = data.photo[0];
@@ -84,7 +97,8 @@ export default function AddProduct() {
                         location: data.location,
                         purchaseYear: Date.parse(selected),
                         createdAt: Date.now(),
-                        categoryId: data.category,
+                        categoryId,
+                        categoryName,
                         availability: 'available'
                     }
                     saveProductToDatabase(productData);
@@ -112,12 +126,9 @@ export default function AddProduct() {
                 if (data.insertedId) {
                     toast.success('Product added successfully!')
                 }
-                else {
+                // setTimeout(() => {
 
-                }
-                setTimeout(() => {
-
-                }, 4000);
+                // }, 4000);
 
                 setSpinner(false);
             })
@@ -301,11 +312,13 @@ export default function AddProduct() {
                                         </label> <br />
                                         {
                                             <select
-                                                {...register('category', { required: true })} className=' w-full rounded-lg mt-4 border p-4'>
+                                                {...register('category', { required: true })} className=' w-full rounded-lg mt-4 border p-4'
+                                                defaultValue='select'
+                                            >
 
-                                                <option disabled>Select a catergory</option>
+                                                <option value={['select', 'select']}>Select a catergory</option>
                                                 {
-                                                    categories.map(category => <option key={category._id} value={category._id}>
+                                                    categories.map(category => <option key={category._id} value={[category._id, category.category]}>
                                                         {category.category}
                                                     </option>)
                                                 }
