@@ -1,13 +1,13 @@
-import { GoogleAuthProvider } from 'firebase/auth';
+import { deleteUser, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import app from '../../../firebase/firebase.config';
 // import useToken from '../../hooks/useToken';
-// import googleLogin from '../Login/googleLogin';
-
+// import googleLogin from '../Login/goo
 const provider = new GoogleAuthProvider();
 
 export default function Register() {
@@ -19,6 +19,7 @@ export default function Register() {
     const [err, setErr] = useState('')
     // const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
+
 
     // if (token) return navigate('/')
 
@@ -32,15 +33,22 @@ export default function Register() {
                 const userInfo = {
                     displayName: data.fullName
                 }
+
                 updateUser(userInfo)
                     .then(() => {
                         saveUser(data);
                         console.log(result.user)
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        setSpin(false)
+                        setErr(err.message)
+                        console.log(err)
+                    })
+
 
             })
             .catch(err => {
+                setSpin(false)
                 setErr(err.message);
             })
     }
@@ -103,7 +111,7 @@ export default function Register() {
             <div className='flex justify-center'>
                 <div className='w-96 shadow-lg -shadow-lg p-8 rounded-lg'>
                     <h3 className='text-center mb-9'>Register</h3>
-                    <p>{err}</p>
+                    <p className=' text-red-500 text-xs font-semibold'>{err}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label className=' text-sm' htmlFor="fullName">Full Name</label> <br />
                         <input type="text" placeholder="Full Name" className="border rounded-lg p-2 input input-bordered w-full mb-3"

@@ -19,9 +19,9 @@ export default function AllSellers() {
         }
     })
 
-    const handleDelete = id => {
-        setSpin(id);
-        fetch(`${process.env.REACT_APP_url}/users/delete/${id}`, {
+    const handleDelete = email => {
+        setSpin(email);
+        fetch(`${process.env.REACT_APP_url}/users/delete/${email}`, {
             method: 'DELETE'
         })
             .then(res => res.json())
@@ -29,7 +29,16 @@ export default function AllSellers() {
                 console.log(data);
                 setSpin(false)
                 refetch();
-                if (data.deletedCount) toast.success('Deleted Successfully')
+                if (data.deletedCount) {
+                    toast.success('Deleted Successfully')
+                    fetch(`${process.env.REACT_APP_url}/user/products/delete/${email}`, {
+                        method: 'DELETE'
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                }
                 else toast.error('Something went wrong!')
             })
             .catch(err => console.log(err))
@@ -105,14 +114,13 @@ export default function AllSellers() {
                                         </div>
                                     </td>
 
-
                                     <td className="py-4 px-6 text-left">
                                         {
-                                            spin === seller._id
+                                            spin === seller.email
                                                 ?
                                                 <div className='btn w-full'><div className='border-2 w-6 h-6 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
                                                 :
-                                                <img onClick={() => handleDelete(seller._id)} src={deleteIcon} alt="" className='w-6 h-6 cursor-pointer' />
+                                                <img onClick={() => handleDelete(seller.email)} src={deleteIcon} alt="" className='w-6 h-6 cursor-pointer' />
                                         }
                                     </td>
                                 </tr>)
