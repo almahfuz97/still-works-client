@@ -104,7 +104,11 @@ export default function Login() {
                         <p className=' text-red-500'> {errors?.email && 'Email is required'} </p>
                         {
                             spin ?
-                                <div className='btn w-full mt-4'><div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
+                                <div className='btn flex justify-center w-full mt-4'>
+                                    <div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'>
+
+                                    </div>
+                                </div>
                                 :
                                 <input type="submit" className='btn border cursor-pointer hover:bg-slate-50 rounded-lg w-full mt-4 py-2 px-2' value="Login" />
 

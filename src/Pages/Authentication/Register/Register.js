@@ -144,7 +144,10 @@ export default function Register() {
 
                         {
                             spin
-                                ? <div className='btn w-full mt-4'><div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
+                                ? <div className='btn flex justify-center w-full mt-4'>
+                                    <div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'>
+                                    </div>
+                                </div>
                                 : <input type="submit" className='border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 w-full mt-4' value="Register" />
 
                         }
