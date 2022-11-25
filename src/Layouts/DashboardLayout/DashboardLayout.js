@@ -26,7 +26,6 @@ export default function DashboardLayout() {
             <Navbar></Navbar>
             <div className='grid grid-cols-12 mx-12'>
                 <div className=' border hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
-                    <h3>My Orders</h3>
                     {
                         isLoading
                             ? <Spinner />
@@ -44,9 +43,18 @@ export default function DashboardLayout() {
                                 :
                                 userInfo.role === 'admin'
                                     ?
-                                    <Link>All Users</Link>
+                                    <>
+                                        <p>
+                                            <Link to='/dashboard/allSellers'>All Sellers</Link>
+                                        </p>
+                                        <p>
+                                            <Link to='/dashboard/allBuyers'>All  Buyers</Link>
+                                        </p>
+                                    </>
                                     : ''
                     }
+                    <h3>My Orders</h3>
+
                 </div>
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
                     <Outlet />

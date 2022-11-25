@@ -37,6 +37,7 @@ export default function MyProducts() {
                 if (data.deletedCount) toast.success('Deleted Successfully')
                 else toast.error('Something went wrong!')
             })
+            .catch(err => console.log(err))
     }
 
     const handleAdvertise = (id) => {
