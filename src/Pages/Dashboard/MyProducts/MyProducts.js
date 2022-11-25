@@ -2,10 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useState } from 'react'
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider'
+import deleteIcon from '../../../assets/deleteIcon.png'
+import { Tooltip } from 'flowbite-react';
+import toast from 'react-hot-toast';
 
 export default function MyProducts() {
     const { user, loading } = useContext(AuthContext);
     const [isAdvertised, setIsAdvertised] = useState(false);
+    const [spin, setSpin] = useState('');
 
     const { data: products = [], isLoading, isError, refetch } = useQuery({
         queryKey: ['products', user.email],
@@ -19,6 +23,21 @@ export default function MyProducts() {
             }
         }
     })
+
+    const handleDelete = id => {
+        setSpin(id);
+        fetch(`${process.env.REACT_APP_url}/products/delete/${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setSpin(false)
+                refetch();
+                if (data.deletedCount) toast.success('Deleted Successfully')
+                else toast.error('Something went wrong!')
+            })
+    }
 
     const handleAdvertise = (id) => {
         setIsAdvertised(!isAdvertised);
@@ -68,7 +87,16 @@ export default function MyProducts() {
                             products.map(product =>
                                 <tr key={product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {product.product_name}
+                                        {
+                                            product.product_name.length > 14 ?
+                                                <Tooltip content={product.product_name}>
+                                                    {
+                                                        product.product_name.slice(0, 14) + '...'
+                                                    }
+                                                </Tooltip>
+                                                :
+                                                product.product_name
+                                        }
                                     </th>
                                     <td className="py-4 px-6">
                                         ${product.resalePrice}
@@ -77,14 +105,23 @@ export default function MyProducts() {
                                         {product.availability}
                                     </td>
                                     <td className="py-4 px-6">
-                                        <div className='relative rounded-full w-10 h-4 bg-slate-300'>
-                                            <div onClick={() => handleAdvertise(product._id)} className={`${product.isAdvertised ? 'bg-green-500 right-0' : 'bg-black left-0'} absolute rounded-full w-4 h-4`}>
+                                        {
+                                            product.availability === 'available'
+                                            &&
+                                            <div className='relative rounded-full w-10 h-4 bg-slate-300'>
+                                                <div onClick={() => handleAdvertise(product._id)} className={`${product.isAdvertised ? 'bg-green-500 right-0' : 'bg-black dark:bg-white left-0'} absolute rounded-full w-4 h-4`}>
+                                                </div>
                                             </div>
-
-                                        </div>
+                                        }
                                     </td>
-                                    <td className="py-4 px-6 text-right">
-                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                                    <td className="py-4 px-6 text-left">
+                                        {
+                                            spin === product._id
+                                                ?
+                                                <div className='btn w-full'><div className='border-2 w-6 h-6 border-dashed bg-red-500 animate-spin rounded-full'></div></div>
+                                                :
+                                                <img onClick={() => handleDelete(product._id)} src={deleteIcon} alt="" className='w-6 h-6 cursor-pointer' />
+                                        }
                                     </td>
                                 </tr>)
                         }
