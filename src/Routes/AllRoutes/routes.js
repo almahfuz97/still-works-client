@@ -5,7 +5,9 @@ import Register from "../../Pages/Authentication/Register/Register";
 import AddProduct from "../../Pages/Dashboard/AddProduct/AddProduct";
 import AllBuyers from "../../Pages/Dashboard/AllBuyers/AllBuyers";
 import AllSellers from "../../Pages/Dashboard/AllSellers/AllSellers";
+import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
 import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
+import Payment from "../../Pages/Dashboard/Payment/Payment";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
 import Products from "../../Pages/Products/Products";
 import PrivateRoute from "../PrivateRoute.js/PrivateRoute";
@@ -51,6 +53,7 @@ export const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: '/dashboard/addproduct',
@@ -67,6 +70,15 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/allSellers',
                 element: <AllSellers />
+            },
+            {
+                path: '/dashboard/myOrders',
+                element: <MyOrders />
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element: <Payment />,
+                loader: ({ params }) => fetch(`${process.env.REACT_APP_url}/dashboard/payment/${params.id}`)
             },
         ]
 

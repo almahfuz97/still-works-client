@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 export default function MyProducts() {
     const { user, loading } = useContext(AuthContext);
     const [isAdvertised, setIsAdvertised] = useState(false);
+    const [spinAdvertise, setSpinAdvertise] = useState('');
     const [spin, setSpin] = useState('');
 
     const { data: products = [], isLoading, isError, refetch } = useQuery({
@@ -42,6 +43,8 @@ export default function MyProducts() {
 
     const handleAdvertise = (id) => {
         setIsAdvertised(!isAdvertised);
+        setSpinAdvertise(id)
+
         fetch(`${process.env.REACT_APP_url}/products/advertise/${id}`, {
             method: 'PUT',
             headers: {
@@ -54,8 +57,13 @@ export default function MyProducts() {
                 console.log('hello')
                 console.log(isUpdatedData)
                 refetch();
+                setSpinAdvertise('')
+
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setSpinAdvertise('')
+                console.log(err)
+            })
     }
     if (isLoading) return <Spinner />
     if (isError) return <div className=' text-center text-red-500 font-bold drop-shadow text-2xl'>Something went wront!</div>
@@ -105,7 +113,7 @@ export default function MyProducts() {
                                     <td className="py-4 px-6">
                                         {product.availability}
                                     </td>
-                                    <td className="py-4 px-6">
+                                    <td className="py-4 px-6  flex">
                                         {
                                             product.availability === 'available'
                                             &&
@@ -114,6 +122,13 @@ export default function MyProducts() {
                                                 </div>
                                             </div>
                                         }
+                                        <div className=' w-4  h-4'>
+
+                                            {
+                                                spinAdvertise === product._id &&
+                                                <div className='w-4 h-4 ml-2 border-dashed border-4 animate-spin rounded-full'></div>
+                                            }
+                                        </div>
                                     </td>
                                     <td className="py-4 px-6 text-left">
                                         {

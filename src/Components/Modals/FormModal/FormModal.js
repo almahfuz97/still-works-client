@@ -48,7 +48,8 @@ export default function FormModal({ showModal, setShowModal, product, setAlready
             img: product.img,
             meetingLocation: data.location,
             customerPhone: data.phone,
-            customerEmail: user.email
+            customerEmail: user.email,
+            availability: product.availability
         }
         console.log(bookedProductInfo);
 

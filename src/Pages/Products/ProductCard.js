@@ -86,7 +86,7 @@ export default function ProductCard({ product }) {
                                     <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Booked</button>
                                 </>
                                 :
-                                user.email === sellerEmail
+                                user?.email === sellerEmail
                                     ?
                                     <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Your Product</button>
                                     :

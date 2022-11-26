@@ -53,7 +53,9 @@ export default function DashboardLayout() {
                                     </>
                                     : ''
                     }
-                    <h3>My Orders</h3>
+                    <p>
+                        <Link to='/dashboard/myOrders'>My Orders</Link>
+                    </p>
 
                 </div>
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
