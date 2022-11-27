@@ -10,7 +10,9 @@ import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
 import Payment from "../../Pages/Dashboard/Payment/Payment";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
 import Products from "../../Pages/Products/Products";
+import AdminRoute from "../AdminRoute/AdminRoute";
 import PrivateRoute from "../PrivateRoute.js/PrivateRoute";
+import SellerRoute from "../SellerRoute/SellerRoute";
 
 const { createBrowserRouter } = require("react-router-dom");
 const { default: ErrorPage } = require("../../Components/ErrorPage/ErrorPage");
@@ -40,8 +42,12 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/category/:id',
-                element: <Products />,
-                loader: ({ params }) => fetch(`${process.env.REACT_APP_url}/category/${params.id}`)
+                element: <PrivateRoute> <Products /></PrivateRoute>,
+                loader: async ({ params }) => fetch(`${process.env.REACT_APP_url}/category/${params.id}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                })
             },
             {
                 path: '/formModal',
@@ -57,7 +63,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: '/dashboard/addproduct',
-                element: <AddProduct />
+                element: <SellerRoute><AddProduct /></SellerRoute>
             },
             {
                 path: '/dashboard/myProducts',
@@ -65,14 +71,18 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/allBuyers',
-                element: <AllBuyers />
+                element: <AdminRoute><AllBuyers /></AdminRoute>
             },
             {
                 path: '/dashboard/allSellers',
-                element: <AllSellers />
+                element: <AdminRoute><AllSellers /></AdminRoute>
             },
             {
                 path: '/dashboard/myOrders',
+                element: <MyOrders />
+            },
+            {
+                path: '/dashboard',
                 element: <MyOrders />
             },
             {

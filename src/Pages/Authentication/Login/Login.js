@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
+import useToken from '../../../hooks/useToken';
 // import useToken from '../../hooks/useToken';
 // import googleLogin from './googleLogin';
 
@@ -17,9 +18,10 @@ export default function Login() {
     const navigate = useNavigate();
     const location = useLocation();
     const [loginEmail, setLoginEmail] = useState();
-    // const [token] = useToken(loginEmail)
+    const [token] = useToken(loginEmail)
     const [err, setErr] = useState('');
     const from = location.state?.from?.pathname || '/';
+    console.log(from)
 
     // if (token) return navigate(from, { replace: true })
 
@@ -72,9 +74,9 @@ export default function Login() {
             body: JSON.stringify(userInfo)
         })
             .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                setLoginEmail('');
+            .then(resData => {
+                console.log(resData)
+                setLoginEmail(data.email);
             })
             .catch(err => console.log(err))
     }
@@ -82,8 +84,8 @@ export default function Login() {
     console.log('baire')
     if (loading) return <Spinner />
     // if (spin) return <Spinner />
-    // if (token) return <Navigate to={from} replace />
-    if (user?.uid) return <Navigate to={from} replace={true} />
+    if (token) return <Navigate to={from} replace />
+    // if (user?.uid) return <Navigate to={from} replace={true} />
     return (
         <div className='my-12 mx-4'>
             <div className='flex justify-center'>

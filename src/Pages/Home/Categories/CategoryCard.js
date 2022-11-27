@@ -1,11 +1,12 @@
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export default function CategoryCard({ category }) {
     const { category: name, img, _id } = category;
     const navigate = useNavigate();
+    const location = useLocation();
     const handleCategoryClick = (id) => {
-        navigate(`/category/${id}`);
+        navigate(`/category/${id}`, { state: { from: location }, replace: true });
     }
     return (
         <div>

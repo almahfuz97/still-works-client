@@ -12,7 +12,11 @@ export default function MyOrdersCard({ order }) {
             <div>
                 <img src={order.img} alt="" className='w-full' />
                 <h1 className='mt-4 font-bold p-2 '>{order.product_name}</h1>
-                <button onClick={() => handlePayNow(order._id)} className='bg-green-400 rounded-lg p-2'>Pay Now</button>
+                {
+                    order?.isPaid ?
+                        <button disabled className='bg-gray-400 rounded-lg p-2'>Paid</button> :
+                        <button onClick={() => handlePayNow(order._id)} className='bg-green-400 rounded-lg p-2'>Pay Now</button>
+                }
             </div>
         </div>
     )

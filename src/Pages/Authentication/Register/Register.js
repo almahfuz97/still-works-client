@@ -6,22 +6,21 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 import app from '../../../firebase/firebase.config';
-// import useToken from '../../hooks/useToken';
+import useToken from '../../../hooks/useToken';
 // import googleLogin from '../Login/goo
 const provider = new GoogleAuthProvider();
 
 export default function Register() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { user, loading, providerLogin, createUser, updateUser } = useContext(AuthContext);
-    const [createdUserEmail, setCreatedUserEmail] = useState('');
-    const [email, setEmail] = useState()
-    const [spin, setSpin] = useState(false)
-    const [err, setErr] = useState('')
-    // const [token] = useToken(createdUserEmail);
+    const [createdUserEmail, setCreatedUserEmail] = useState();
+
+    const [spin, setSpin] = useState(false);
+    const [err, setErr] = useState('');
+    const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
 
-
-    // if (token) return navigate('/')
+    if (token) return navigate('/');
 
     const onSubmit = data => {
         setErr('')
@@ -90,9 +89,9 @@ export default function Register() {
             body: JSON.stringify(userInfo)
         })
             .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                setCreatedUserEmail(email);
+            .then(resData => {
+                console.log(resData)
+                setCreatedUserEmail(data.email);
                 setSpin(false);
             })
             .catch(err => {
@@ -105,7 +104,8 @@ export default function Register() {
     if (loading) return <Spinner />
     // both works
     // if (token) return <Navigate to='/' />
-    if (user?.uid) return <Navigate to='/' />
+    // if (user?.uid) return <Navigate to='/' />
+
     return (
         <div className='my-16 mx-4'>
             <div className='flex justify-center'>

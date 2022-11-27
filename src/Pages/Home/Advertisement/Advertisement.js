@@ -26,7 +26,7 @@ export default function Advertisement() {
     if (isLoading) return <Spinner />
     if (advertisedProducts.length === 0) return;
     return (
-        <div className=' mt-16'>
+        <div className=' mt-16  '>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={50}
@@ -35,10 +35,11 @@ export default function Advertisement() {
                 onSwiper={(swiper) => console.log(swiper)}
                 navigation
                 pagination={{ clickable: true }}
+
             >
                 {
                     advertisedProducts.map(product => <SwiperSlide key={product._id}>
-                        <img src={product.img} alt="" className=' w-full p-12' />
+                        <img src={product.img} alt="" className='border min-h-[150px] p-4 mb-10 ' />
                     </SwiperSlide>)
                 }
 

@@ -5,7 +5,7 @@ export default function CheckOut({ order }) {
     const stripe = useStripe();
     const elements = useElements()
     const [cardError, setCardError] = useState('');
-    const { resalePrice, customerEmail, customerName } = order
+    const { resalePrice, customerEmail, customerName, _id } = order
 
     const [clientSecret, setClientSecret] = useState("");
 
@@ -56,7 +56,32 @@ export default function CheckOut({ order }) {
             setCardError(confirmError.message);
             return;
         }
-        console.log('payment intent:', paymentIntent)
+        console.log('payment intent:', paymentIntent);
+
+        if (paymentIntent.status = 'succeeded') {
+
+            const payment = {
+                price: resalePrice,
+                transactionId: paymentIntent.id,
+                bookingId: _id,
+                email: customerEmail,
+                productId: order.productId
+            }
+            fetch(`${process.env.REACT_APP_url}/payments`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(payment)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
     return (
         <form onSubmit={handleSubmit} className='w-96 m-2 mt-4'>
