@@ -25,7 +25,7 @@ export default function Navbar2() {
             })
     }
     return (
-        <div>
+        <div className="mb-16">
             <Navbar
                 fluid={true}
                 rounded={true}
