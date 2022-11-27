@@ -11,7 +11,11 @@ export default function MyOrders() {
         queryKey: ['myOrders', user?.email],
         queryFn: async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_url}/myOrders?email=${user?.email}`);
+                const res = await fetch(`${process.env.REACT_APP_url}/myOrders?email=${user?.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                });
                 const data = await res.json();
                 return data;
             } catch (error) {

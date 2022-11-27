@@ -27,7 +27,11 @@ export default function AddProduct() {
         queryKey: ['categories'],
         queryFn: async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_url}/categories`);
+                const res = await fetch(`${process.env.REACT_APP_url}/categories`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                });
                 const data = await res.json();
                 return data;
 

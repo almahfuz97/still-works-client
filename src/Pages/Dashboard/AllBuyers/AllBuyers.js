@@ -1,16 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import Spinner from '../../../Components/Spinner/Spinner';
 import deleteIcon from '../../../assets/deleteIcon.png'
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 export default function AllBuyers() {
     const [spin, setSpin] = useState('');
+    const { user } = useContext(AuthContext);
     const { data: buyers, isLoading, isError, refetch } = useQuery({
-        queryKey: ['buyers'],
+        queryKey: ['buyers', user?.email],
         queryFn: async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_url}/buyers`);
+                const res = await fetch(`${process.env.REACT_APP_url}/buyers`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`,
+                        email: user?.email
+                    }
+                });
                 const data = await res.json();
                 return data;
             } catch (error) {
@@ -21,7 +28,12 @@ export default function AllBuyers() {
     const handleDelete = id => {
         setSpin(id);
         fetch(`${process.env.REACT_APP_url}/users/delete/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('still-works-token')}`,
+                email: user?.email
+            }
+
         })
             .then(res => res.json())
             .then(data => {

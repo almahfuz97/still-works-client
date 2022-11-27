@@ -16,7 +16,11 @@ export default function MyProducts() {
         queryKey: ['products', user.email],
         queryFn: async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_url}/products/seller/${user.email}`)
+                const res = await fetch(`${process.env.REACT_APP_url}/products/seller/${user.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                })
                 const data = await res.json();
                 return data;
             } catch (error) {

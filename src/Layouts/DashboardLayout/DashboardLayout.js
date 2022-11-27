@@ -8,6 +8,7 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 
 export default function DashboardLayout() {
     const { user, loading } = useContext(AuthContext);
+
     const { data: userInfo, isLoading, error } = useQuery({
         queryKey: ['users', user?.email],
         queryFn: async () => {
@@ -21,37 +22,36 @@ export default function DashboardLayout() {
         }
     })
 
+    if (isLoading) return <Spinner />
     return (
         <div>
             <Navbar></Navbar>
+
             <div className='grid grid-cols-12 mx-12'>
                 <div className=' border hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
                     {
-                        isLoading
-                            ? <Spinner />
+                        userInfo.role === 'Seller'
+                            ?
+                            <>
+                                <p>
+                                    <Link to='/dashboard/addproduct'>Add Product</Link>
+                                </p>
+                                <p>
+                                    <Link to='/dashboard/myProducts'>My Products</Link>
+                                </p>
+                            </>
                             :
-                            userInfo.role === 'Seller'
+                            userInfo.role === 'admin'
                                 ?
                                 <>
                                     <p>
-                                        <Link to='/dashboard/addproduct'>Add Product</Link>
+                                        <Link to='/dashboard/allSellers'>All Sellers</Link>
                                     </p>
                                     <p>
-                                        <Link to='/dashboard/myProducts'>My Products</Link>
+                                        <Link to='/dashboard/allBuyers'>All  Buyers</Link>
                                     </p>
                                 </>
-                                :
-                                userInfo.role === 'admin'
-                                    ?
-                                    <>
-                                        <p>
-                                            <Link to='/dashboard/allSellers'>All Sellers</Link>
-                                        </p>
-                                        <p>
-                                            <Link to='/dashboard/allBuyers'>All  Buyers</Link>
-                                        </p>
-                                    </>
-                                    : ''
+                                : ''
                     }
                     <p>
                         <Link to='/dashboard/myOrders'>My Orders</Link>
