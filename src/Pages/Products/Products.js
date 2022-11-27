@@ -9,10 +9,9 @@ export default function Products() {
     const navigation = useNavigation();
 
     if (navigation.state === "loading") return <Spinner />
-
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-12 gap-6 mb-8'>
-            {products?.map(product => <ProductCard key={product._id} product={product}></ProductCard>)}
+            {products.map(product => <ProductCard key={product._id} product={product}></ProductCard>)}
         </div>
     )
 }

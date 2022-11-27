@@ -7,31 +7,13 @@ import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
-export default function FormModal({ showModal, setShowModal, product, setAlreadyBooked }) {
+export default function FormModal({ showModal, setShowModal, product, setAlreadyBooked, bookedRefetch }) {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { user } = useContext(AuthContext);
     const [spin, setSpin] = useState(false)
 
-    const { data: isBooked, refetch } = useQuery({
-        queryKey: ['bookedProducts', user.email, product._id],
-        queryFn: async () => {
-            try {
-                const res = await fetch(`${process.env.REACT_APP_url}/bookedProducts/${product._id}`, {
-                    headers: {
-                        email: user.email
-                    }
-                });
-                const data = await res.json();
-                setAlreadyBooked(data.isFound);
-                return data;
 
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    })
 
-    console.log(isBooked);
 
     const onSubmit = (data) => {
         setSpin(true)
@@ -65,7 +47,7 @@ export default function FormModal({ showModal, setShowModal, product, setAlready
                 console.log(data)
                 setSpin(false);
                 toast.success('Product booked successfully.');
-                refetch();
+                bookedRefetch();
                 setShowModal(false);
             })
             .catch(err => {

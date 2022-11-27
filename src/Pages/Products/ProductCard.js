@@ -16,6 +16,8 @@ export default function ProductCard({ product }) {
     const { user } = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
     const [alreadyBooked, setAlreadyBooked] = useState(false);
+    const [allreadyWishlisted, setAllreadyWishlisted] = useState(false);
+
 
     // REACT QUERY
     const { data: seller = [], isLoading, isError } = useQuery({
@@ -27,23 +29,42 @@ export default function ProductCard({ product }) {
                 return data;
             } catch (error) {
                 const data = [];
-                return data;
             }
         }
     })
     const { data: wishlist = [], isLoading: wishlistLoading, isError: wishlistError, refetch } = useQuery({
-        queryKey: ['wishlist', user?.email],
+        queryKey: ['wishlist', user?.email, product._id],
         queryFn: async () => {
             try {
                 const res = await fetch(`${process.env.REACT_APP_url}/wishlist/${user?.email}`, {
                     headers: {
-                        productid: _id
+                        productid: product._id
                     }
                 });
                 const data = await res.json();
+                setAllreadyWishlisted(data.isFound);
                 return data;
             } catch (error) {
 
+            }
+        }
+    })
+
+    const { data: isBooked, refetch: bookedRefetch } = useQuery({
+        queryKey: ['bookedProducts', user.email, product._id],
+        queryFn: async () => {
+            try {
+                const res = await fetch(`${process.env.REACT_APP_url}/bookedProducts/${product._id}`, {
+                    headers: {
+                        email: user.email
+                    }
+                });
+                const data = await res.json();
+                setAlreadyBooked(data.isFound);
+                return data;
+
+            } catch (error) {
+                console.log(error)
             }
         }
     })
@@ -66,7 +87,6 @@ export default function ProductCard({ product }) {
             .then(data => {
                 if (data.deletedCount || data.insertedId) {
                     refetch();
-
                 }
                 if (data.deletedCount) toast.success('Deleted from wishlist')
                 if (data.insertedId) toast.success('Added to wishlist')
@@ -103,6 +123,7 @@ export default function ProductCard({ product }) {
                     setAlreadyBooked={setAlreadyBooked}
                     setShowModal={setShowModal}
                     product={product}
+                    bookedRefetch={bookedRefetch}
                 >
 
                 </FormModal>
@@ -127,7 +148,7 @@ export default function ProductCard({ product }) {
                                 {
                                     user?.email !== sellerEmail
                                         ?
-                                        wishlist.isFound ?
+                                        allreadyWishlisted ?
                                             <img onClick={() => handleBookmark(_id)} src={bookmarkPink} alt="" className='w-6 h-6 cursor-pointer'
                                             />
                                             :

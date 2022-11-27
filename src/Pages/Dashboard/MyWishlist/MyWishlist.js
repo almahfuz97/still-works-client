@@ -10,6 +10,7 @@ export default function MyWishlist() {
 
     const wishlistedItems = useLoaderData();
 
+    if (wishlistedItems.length === 0) return <div className="text-center">You haven't added any product on your wishlist</div>
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-12 gap-6 mb-8'>
             {wishlistedItems?.map(item => <MyWishlistCard key={item._id} item={item}></MyWishlistCard>)}
