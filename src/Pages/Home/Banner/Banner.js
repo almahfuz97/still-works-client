@@ -11,12 +11,6 @@ export default function Banner() {
         <div>
             <div className="  relative sm:h-64 md:h-[500px] xl:h-[400px] 2xl:h-[500px]">
                 <Carousel>
-                    {/* <img
-                        src={pic1}
-                        alt="..."
-                    /> */}
-
-
                     <div className="flex img-gradient relative h-full items-center  justify-center bg-gray-400 dark:bg-gray-700  dark:text-white">
                         <img
                             src={pic2}
