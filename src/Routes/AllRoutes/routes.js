@@ -7,6 +7,7 @@ import AllBuyers from "../../Pages/Dashboard/AllBuyers/AllBuyers";
 import AllSellers from "../../Pages/Dashboard/AllSellers/AllSellers";
 import MyOrders from "../../Pages/Dashboard/MyOrders/MyOrders";
 import MyProducts from "../../Pages/Dashboard/MyProducts/MyProducts";
+import MyWishlist from "../../Pages/Dashboard/MyWishlist/MyWishlist";
 import Payment from "../../Pages/Dashboard/Payment/Payment";
 import HomPage from "../../Pages/Home/HomePage/HomPage";
 import Products from "../../Pages/Products/Products";
@@ -84,6 +85,15 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard',
                 element: <MyOrders />
+            },
+            {
+                path: '/dashboard/mywishlist/:email',
+                element: <MyWishlist />,
+                loader: ({ params }) => fetch(`${process.env.REACT_APP_url}/mywishlist/${params.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                })
             },
             {
                 path: '/dashboard/payment/:id',

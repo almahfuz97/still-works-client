@@ -26,7 +26,8 @@ export default function ProductCard({ product }) {
                 const data = await res.json();
                 return data;
             } catch (error) {
-
+                const data = [];
+                return data;
             }
         }
     })

@@ -56,6 +56,9 @@ export default function DashboardLayout() {
                     <p>
                         <Link to='/dashboard/myOrders'>My Orders</Link>
                     </p>
+                    <p>
+                        <Link to={`/dashboard/mywishlist/${user?.email}`}>My Wishlist</Link>
+                    </p>
 
                 </div>
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
