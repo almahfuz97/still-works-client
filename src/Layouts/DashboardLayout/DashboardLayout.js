@@ -30,10 +30,10 @@ export default function DashboardLayout() {
             <Navbar></Navbar>
 
             <div className='relative'>
-                <button onClick={() => setShowDashboard(!showDashboard)} className='bg-primary-color p-2 rounded-r-2xl md:hidden flex text-white'>
-                    DashBoard
+                <button onClick={() => setShowDashboard(!showDashboard)} className='bg-primary-color p-2  rounded-r-2xl md:hidden mb-8 -mt-8 flex text-white text-xl font-bold'>
+                    Dashboard  <span className='font-bold ml-px text-xl'>&gt;</span>
                 </button>
-                <div className={`absolute md:hidden rounded-lg shadow drop-shadow rounded-tl-none rounded-bl-none pt-2 uppercase text-white font-bold p-8 bg-slate-400 z-10 ${showDashboard ? 'flex' : 'hidden'}`}>
+                <div className={`absolute md:hidden -mt-8 rounded-lg shadow drop-shadow rounded-tl-none rounded-bl-none pt-2 uppercase text-white font-bold p-8 bg-slate-400 z-10 ${showDashboard ? 'flex' : 'hidden'}`}>
                     <div>
                         <p onClick={() => setShowDashboard(!showDashboard)}>
                             <Link to='/dashboard/myOrders'>My Orders</Link>
@@ -68,8 +68,9 @@ export default function DashboardLayout() {
                     </div>
                 </div>
             </div>
-            <div className='grid  grid-cols-12 mx-12'>
-                <div className=' hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
+
+            <div className='grid  grid-cols-12 mx-12 mb-16'>
+                <div className=' hidden md:block md:col-span-3 space-y-6 bg-slate-400 p-2 uppercase font-bold text-white rounded-lg shadow text-center lg:col-span-2'>
                     <p>
                         <Link to='/dashboard/myOrders'>My Orders</Link>
                     </p>
@@ -104,7 +105,7 @@ export default function DashboardLayout() {
 
                 </div>
 
-                <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
+                <div className=' md:col-span-9 col-span-12 lg:col-span-10 '>
                     <Outlet />
                 </div>
             </div>
