@@ -12,8 +12,11 @@ export default function MyWishlist() {
 
     if (wishlistedItems.length === 0) return <div className="text-center">You haven't added any product on your wishlist</div>
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:mx-12 mx-2 gap-6 mb-8'>
-            {wishlistedItems?.map(item => <MyWishlistCard key={item._id} item={item}></MyWishlistCard>)}
+        <div>
+            <h1 className='text-center text-2xl font-bold mb-8'>Your Wishlist</h1>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:mx-12 mx-2 gap-6 mb-8'>
+                {wishlistedItems?.map(item => <MyWishlistCard key={item._id} item={item}></MyWishlistCard>)}
+            </div>
         </div>
     )
 }

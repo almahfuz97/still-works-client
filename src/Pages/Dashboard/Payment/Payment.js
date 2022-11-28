@@ -13,13 +13,13 @@ export default function Payment() {
     if (navigation === 'loading') return <Spinner />
     return (
         <div>
-            <div className='flex justify-start'>
+            <div className='flex justify-start ml-8'>
                 <div>
-                    {order.product_name}
-                    <h1 className=''>Price: ${order.resalePrice}</h1>
+                    <h3 className=' text-xl font-bold'> {order.product_name}</h3>
+                    <h1 className=' font-bold'>Price: ${order.resalePrice}</h1>
                 </div>
             </div>
-            <div>
+            <div className=' ml-8'>
                 <Elements stripe={stripePromise}>
                     <CheckOut order={order} />
                 </Elements>

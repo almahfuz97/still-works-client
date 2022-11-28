@@ -121,7 +121,7 @@ export default function CheckOut({ order }) {
     }
     if (isLoading) return <Spinner />
     return (
-        <form onSubmit={handleSubmit} className='w-1/2  mt-4 border shadow rounded-lg p-2'>
+        <form onSubmit={handleSubmit} className='w-4/5 md:w-3/4 lg:w-1/2 mt-4   rounded-lg '>
             <CardElement
                 options={{
                     style: {
