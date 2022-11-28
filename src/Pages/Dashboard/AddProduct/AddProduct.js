@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
+import PrimaryButton from '../../../Components/Buttons/PrimaryButton';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider'
 
@@ -22,6 +23,7 @@ export default function AddProduct() {
     const [showCalender, setShowCalender] = useState(false);
     const [selected, setSelected] = useState(new Date());
     const [categoryName, setCategoryName] = useState();
+    const [bookSpin, setBookSpin] = useState(false);
 
     const { data: categories = [], isLoading, error } = useQuery({
         queryKey: ['categories'],
@@ -71,6 +73,7 @@ export default function AddProduct() {
             return;
         }
 
+        setBookSpin(true)
         const image = data.photo[0];
         const formData = new FormData();
         const img = data.photo[0];
@@ -109,10 +112,15 @@ export default function AddProduct() {
                 } else {
                     if (!imgData.success) {
                         toast.error('Something went wrong!')
+                        setBookSpin(false)
+
                     }
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setBookSpin(false)
+                console.log(err)
+            })
 
     }
     // add product to database function
@@ -135,16 +143,20 @@ export default function AddProduct() {
                 // }, 4000);
 
                 setSpinner(false);
+                setBookSpin(false)
+
             })
             .catch(err => {
                 setSpinner(false)
                 toast.error(err.message)
                 console.log(err)
+                setBookSpin(false)
+
             })
     }
 
     return (
-        <div className='mt-8'>
+        <div className='mt-8 mb-16'>
             <div className='fixed right-1/2'>
                 {
                     spinner && <Spinner />
@@ -342,7 +354,17 @@ export default function AddProduct() {
                             <div className='mt-16'>
 
                                 <div className='mt-8'>
-                                    <button type='submit' className='border py-4 px-8 bg-red-500 rounded-lg font-bold text-white'>Submit</button>
+                                    {
+                                        bookSpin ?
+                                            <div className='btn flex  w-full mt-4'>
+                                                <div className='border-4 w-4 h-4 border-dashed bg-primary-color animate-spin rounded-full'>
+                                                </div>
+                                            </div>
+                                            :
+                                            <button type='submit'>
+                                                <PrimaryButton >Submit</PrimaryButton>
+                                            </button>
+                                    }
                                 </div>
                             </div>
 

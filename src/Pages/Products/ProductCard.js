@@ -10,6 +10,8 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 import bookmarkBlack from '../../assets/bookmarkBlack.png'
 import bookmarkPink from '../../assets/bookmarkPink.png'
 import toast from 'react-hot-toast';
+import PrimaryButton from '../../Components/Buttons/PrimaryButton';
+import { tr } from 'date-fns/locale';
 
 export default function ProductCard({ product }) {
     const { img, originalPrice, resalePrice, condition, phone, location, description, purchaseYear, createdAt, availability, product_name, sellerName, sellerEmail, categoryName, _id } = product;
@@ -125,14 +127,29 @@ export default function ProductCard({ product }) {
                     product={product}
                     bookedRefetch={bookedRefetch}
                 >
-
                 </FormModal>
             }
             <div>
-                <img src={img} alt="" className='w-full' />
-                <div className='px-4'>
+                <div className=' p-6 md:pb-0 pb-0 '>
+                    <img src={img} alt="" className='w-full min-h-[300px] max-h-[300px] rounded-lg' />
+                </div>
+                <div className='px-6'>
                     <div>
-                        <h3 className=' font-bold text-lg mt-4'>{product_name}</h3>
+                        <div className='flex justify-between items-center'>
+                            <h3 className=' font-bold text-lg mt-4'>{product_name}</h3>
+
+                            {
+                                user?.email !== sellerEmail
+                                    ?
+                                    allreadyWishlisted ?
+                                        <img onClick={() => handleBookmark(_id)} src={bookmarkPink} alt="" className='w-6 h-6 cursor-pointer'
+                                        />
+                                        :
+                                        <img onClick={() => handleBookmark(_id)} src={bookmarkBlack} alt="" className='w-6 h-6 cursor-pointer'
+                                        />
+                                    : ''
+                            }
+                        </div>
                         <div className='mb-4'>
                             <div className='flex items-center'>
                                 <small className=' opacity-50'> Seller: {sellerName}</small>
@@ -141,38 +158,33 @@ export default function ProductCard({ product }) {
                                     <img src={verifiedIcon} alt="" className='w-4 h-4  ml-1' />
                                 }
                             </div>
+                            <p className=' opacity-80'><small>{location}</small></p>
                             <div className=' flex justify-between items-center'>
-                                <p><small className=' opacity-50 font-bold'>Brand: {categoryName}</small>
 
-                                </p>
-                                {
-                                    user?.email !== sellerEmail
-                                        ?
-                                        allreadyWishlisted ?
-                                            <img onClick={() => handleBookmark(_id)} src={bookmarkPink} alt="" className='w-6 h-6 cursor-pointer'
-                                            />
-                                            :
-                                            <img onClick={() => handleBookmark(_id)} src={bookmarkBlack} alt="" className='w-6 h-6 cursor-pointer'
-                                            />
-                                        : ''
-                                }
+
                             </div>
                         </div>
-                        <small className=' font-bold'>${resalePrice}</small><br />
+                        <p>
+                            <small className=' opacity-50 font-bold'>Brand: {categoryName}</small>
+                        </p>
+                        <small className=' font-bold'>Price: ${resalePrice}</small><br />
                         <small className=' opacity-50'>Original Price: ${originalPrice}</small><br />
                         <small className=' text-sm'>Used: {usedDays}</small> <br />
-                        <div className='flex justify-between items-center'>
+                        <div className='flex justify-between items-end my-2'>
                             {
                                 alreadyBooked ?
                                     <>
-                                        <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Booked</button>
+                                        <PrimaryButton disabled={true} className='bg-slate-500 text-white px-3 py-2 rounded-lg mt-2'>Booked</PrimaryButton>
                                     </>
                                     :
                                     user?.email === sellerEmail
                                         ?
-                                        <button disabled className='bg-slate-500 text-white p-2 rounded-lg mt-2'>Your Product</button>
+                                        <PrimaryButton disabled={true} className='bg-slate-500 text-white px-3 py-2 rounded-lg mt-2'>Your Product</PrimaryButton>
                                         :
-                                        <button onClick={() => handleBookNow(product)} className='bg-green-500 text-white p-2 rounded-lg mt-2'>Book Now</button>
+                                        <div onClick={() => handleBookNow(product)} >
+                                            <PrimaryButton className='bg-green-500 text-white px-3 py-2 rounded-lg mt-2'>Book Now</PrimaryButton>
+                                        </div>
+
                             }
                             <p className=' text-end opacity-50'>{postedTime}</p>
 

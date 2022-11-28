@@ -31,7 +31,7 @@ export default function MyOrders() {
     return (
         <div>
             MY ORDERS
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-8'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8'>
                 {
                     myOrders.map(order => <MyOrdersCard key={order._id} order={order}></MyOrdersCard>)
                 }

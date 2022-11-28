@@ -9,9 +9,13 @@ export default function Products() {
     const navigation = useNavigation();
 
     if (navigation.state === "loading") return <Spinner />
+    console.log(products)
     return (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-12 gap-6 mb-8'>
-            {products.map(product => <ProductCard key={product._id} product={product}></ProductCard>)}
+        <div>
+            <h3 className='text-center text-3xl font-bold drop-shadow mb-16'>{products[4]?.categoryName}</h3>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-4 lg:mx-16  gap-6 mb-16'>
+                {products.map(product => <ProductCard key={product._id} product={product}></ProductCard>)}
+            </div>
         </div>
     )
 }

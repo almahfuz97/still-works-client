@@ -76,10 +76,13 @@ export default function FormModal({ showModal, setShowModal, product, setAlready
                             value={`$${product.resalePrice}`}
 
                         />
-                        <label className=' text-sm' htmlFor="email">Email</label> <br />
-                        <input type="text" disabled placeholder={`${product.sellerEmail}`} className="border rounded-lg p-2 font-bold bg-slate-200 input input-bordered w-full mb-3"
-                            value={`${product.sellerEmail}`}
-
+                        <label className=' text-sm' htmlFor="email">Your Email</label> <br />
+                        <input type="text" disabled placeholder={`${user?.email}`} className="border rounded-lg p-2 font-bold bg-slate-200 input input-bordered w-full mb-3"
+                            value={`${user?.email}`}
+                        />
+                        <label className=' text-sm' htmlFor="email">Your Name</label> <br />
+                        <input type="text" disabled placeholder={`${user?.displayName}`} className="border rounded-lg p-2 font-bold bg-slate-200 input input-bordered w-full mb-3"
+                            value={`${user?.displayName}`}
                         />
                         <p className=' text-red-500  text-xs'> {errors?.email && 'Email is required'} </p>
 

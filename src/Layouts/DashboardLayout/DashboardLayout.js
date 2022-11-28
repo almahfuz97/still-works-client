@@ -29,6 +29,12 @@ export default function DashboardLayout() {
 
             <div className='grid grid-cols-12 mx-12'>
                 <div className=' border hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
+                    <p>
+                        <Link to='/dashboard/myOrders'>My Orders</Link>
+                    </p>
+                    <p>
+                        <Link to={`/dashboard/mywishlist/${user?.email}`}>My Wishlist</Link>
+                    </p>
                     {
                         userInfo.role === 'Seller'
                             ?
@@ -53,12 +59,7 @@ export default function DashboardLayout() {
                                 </>
                                 : ''
                     }
-                    <p>
-                        <Link to='/dashboard/myOrders'>My Orders</Link>
-                    </p>
-                    <p>
-                        <Link to={`/dashboard/mywishlist/${user?.email}`}>My Wishlist</Link>
-                    </p>
+
 
                 </div>
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
