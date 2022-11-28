@@ -2,6 +2,7 @@ import FormModal from "../../Components/Modals/FormModal/FormModal";
 import DashboardLayout from "../../Layouts/DashboardLayout/DashboardLayout";
 import Login from "../../Pages/Authentication/Login/Login";
 import Register from "../../Pages/Authentication/Register/Register";
+import Blog from "../../Pages/Blog/Blog";
 import AddProduct from "../../Pages/Dashboard/AddProduct/AddProduct";
 import AllBuyers from "../../Pages/Dashboard/AllBuyers/AllBuyers";
 import AllSellers from "../../Pages/Dashboard/AllSellers/AllSellers";
@@ -51,8 +52,8 @@ export const router = createBrowserRouter([
                 })
             },
             {
-                path: '/formModal',
-                element: <FormModal />,
+                path: '/blog',
+                element: <Blog />,
             },
 
         ],
