@@ -227,7 +227,7 @@ export default function AddProduct() {
                                         <sup className='ml-2 font-bold text-xl absolute text-red-600'>*</sup>
                                     </label> <br />
                                     <input
-                                        type="text"
+                                        type="number"
                                         {...register('resalePrice', { required: true })}
                                         className="rounded-lg border p-2 mt-4 w-full"
                                     />
