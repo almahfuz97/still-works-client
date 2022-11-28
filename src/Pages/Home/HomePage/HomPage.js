@@ -7,8 +7,8 @@ export default function HomPage() {
     return (
         <div>
             <Banner />
-            <Advertisement />
             <Categories />
+            <Advertisement />
         </div>
     )
 }
