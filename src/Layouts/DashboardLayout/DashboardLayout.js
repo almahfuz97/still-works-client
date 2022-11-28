@@ -38,7 +38,7 @@ export default function DashboardLayout() {
                         <p onClick={() => setShowDashboard(!showDashboard)}>
                             <Link to='/dashboard/myOrders'>My Orders</Link>
                         </p>
-                        <p>
+                        <p onClick={() => setShowDashboard(!showDashboard)}>
                             <Link to={`/dashboard/mywishlist/${user?.email}`}>My Wishlist</Link>
                         </p>
                         {
