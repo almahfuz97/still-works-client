@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker';
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import PrimaryButton from '../../../Components/Buttons/PrimaryButton';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider'
@@ -24,6 +25,7 @@ export default function AddProduct() {
     const [selected, setSelected] = useState(new Date());
     const [categoryName, setCategoryName] = useState();
     const [bookSpin, setBookSpin] = useState(false);
+    const navigate = useNavigate();
 
     const { data: categories = [], isLoading, error } = useQuery({
         queryKey: ['categories'],
@@ -137,6 +139,7 @@ export default function AddProduct() {
                 console.log(data)
                 if (data.insertedId) {
                     toast.success('Product added successfully!')
+                    navigate('/dashboard/myproducts')
                 }
                 // setTimeout(() => {
 
@@ -181,7 +184,6 @@ export default function AddProduct() {
                 <div className='font-bold text-2xl md:text-3xl flex justify-center'>
                     <h1>Add Service</h1>
                 </div>
-
                 <div className=' flex justify-center mt-1'>
                     <div className='h-1 bg-red-600 w-12 md:w-12 lg:w-12'></div>
                 </div>
@@ -361,9 +363,7 @@ export default function AddProduct() {
                                                 </div>
                                             </div>
                                             :
-                                            <button type='submit'>
-                                                <PrimaryButton >Submit</PrimaryButton>
-                                            </button>
+                                            <button type="submit" className="sm:py-2.5 py-1.5 px-1.5 sm:px-5 mr-2 mb-2 text-sm font-semibold text-white focus:outline-none bg-primary-color rounded-lg border border-gray-200 hover:text-slate-300 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Submit</button>
                                     }
                                 </div>
                             </div>

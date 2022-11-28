@@ -4,13 +4,14 @@ import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react'
 import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 export default function FormModal({ showModal, setShowModal, product, setAlreadyBooked, bookedRefetch }) {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { user } = useContext(AuthContext);
     const [spin, setSpin] = useState(false)
+    const navigate = useNavigate();
 
 
 
@@ -49,6 +50,7 @@ export default function FormModal({ showModal, setShowModal, product, setAlready
                 toast.success('Product booked successfully.');
                 bookedRefetch();
                 setShowModal(false);
+                navigate('/dashboard/myorders')
             })
             .catch(err => {
                 setSpin(false);

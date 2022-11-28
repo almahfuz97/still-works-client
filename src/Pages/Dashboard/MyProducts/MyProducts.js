@@ -12,6 +12,7 @@ export default function MyProducts() {
     const [spinAdvertise, setSpinAdvertise] = useState('');
     const [spin, setSpin] = useState('');
 
+
     const { data: products = [], isLoading, isError, refetch } = useQuery({
         queryKey: ['products', user.email],
         queryFn: async () => {
@@ -71,6 +72,7 @@ export default function MyProducts() {
     }
     if (isLoading) return <Spinner />
     if (isError) return <div className=' text-center text-red-500 font-bold drop-shadow text-2xl'>Something went wront!</div>
+
     return (
         <div>
 

@@ -1,6 +1,7 @@
 import { Tooltip } from 'flowbite-react';
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import PrimaryButton from '../../../Components/Buttons/PrimaryButton';
 
 export default function MyOrdersCard({ order }) {
     const navigate = useNavigate();
@@ -29,8 +30,10 @@ export default function MyOrdersCard({ order }) {
                 <div className=' px-6 my-3'>
                     {
                         order?.isPaid ?
-                            <button disabled className='bg-gray-400 rounded-lg px-4 py-2'>Paid</button> :
-                            <button onClick={() => handlePayNow(order._id)} className='bg-green-400 rounded-lg p-2'>Pay Now</button>
+                            <PrimaryButton disabled={true}>Paid</PrimaryButton> :
+                            <div onClick={() => handlePayNow(order._id)} >
+                                <PrimaryButton>Pay Now</PrimaryButton>
+                            </div>
                     }
                 </div>
             </div>

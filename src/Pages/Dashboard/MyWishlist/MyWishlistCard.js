@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import Spinner from '../../../Components/Spinner/Spinner';
+import ProductCard from '../../Products/ProductCard';
 
 export default function MyWishlistCard({ item }) {
 
@@ -23,8 +24,7 @@ export default function MyWishlistCard({ item }) {
     if (wishlistProduct.length === 0) return <div className=' flex justify-center text-red-500'>No wishlisted product</div>
     return (
         <div>
-            <h1>{wishlistProduct.product_name}</h1>
-            <img src={wishlistProduct.img} alt="" />
+            <ProductCard product={wishlistProduct} />
         </div>
     )
 }
