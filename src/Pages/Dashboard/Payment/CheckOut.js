@@ -1,6 +1,7 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useQuery } from '@tanstack/react-query';
 import React, { useContext, useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import ErrorPage from '../../../Components/ErrorPage/ErrorPage';
 import Spinner from '../../../Components/Spinner/Spinner';
 import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
@@ -110,6 +111,7 @@ export default function CheckOut({ order }) {
                 .then(data => {
                     console.log(data);
                     setSuccess(paymentIntent.id)
+                    toast.success('Your payment is successfull')
                     refetch();
                     setSpin(false)
                 })
