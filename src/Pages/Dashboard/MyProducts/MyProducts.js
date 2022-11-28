@@ -72,6 +72,7 @@ export default function MyProducts() {
     }
     if (isLoading) return <Spinner />
     if (isError) return <div className=' text-center text-red-500 font-bold drop-shadow text-2xl'>Something went wront!</div>
+    if (products.length === 0) return <div className=' text-center font-bold '>You haven't added any product yet!</div>
 
     return (
         <div>
