@@ -20,7 +20,7 @@ export default function Categories() {
         <div className='mt-20' id='categories'>
             <h3 className='text-3xl text-center mb-2 drop-shadow font-bold'>Categories</h3>
             <p className='text-center mb-8 opacity-70 drop-shadow '>Explore best brands from here</p>
-            <div className='grid grid-cols-3 justify-items-center gap-4 mx-4 md:mx-16  mb-16'>
+            <div className='grid grid-cols-3 gap-4 mx-4 md:mx-16  mb-16'>
                 {
                     categories.map(category => <CategoryCard key={category._id} category={category}></CategoryCard>)
                 }

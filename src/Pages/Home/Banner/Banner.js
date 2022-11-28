@@ -22,8 +22,9 @@ export default function Banner() {
                 <Carousel>
                     <div className="flex img-gradient relative h-full items-center  justify-center bg-gray-400 dark:bg-gray-700  dark:text-white">
                         <img
-                            src={pic2}
+                            src={pic4}
                             alt="..."
+                            className='cover'
                         />
                         {
                             bannerInfo
@@ -40,7 +41,7 @@ export default function Banner() {
                     </div>
                     <div className="flex img-gradient relative h-full items-center  justify-center bg-gray-400 dark:bg-gray-700  dark:text-white">
                         <img
-                            src={pic4}
+                            src={pic2}
                             alt="..."
                         />
                         {

@@ -27,7 +27,7 @@ export default function Advertisement() {
     if (isLoading) return <Spinner />
     if (advertisedProducts.length === 0) return;
     return (
-        <div className='my-16'>
+        <div className='my-20'>
             <div>
                 <h2 className=' text-center text-3xl font-bold mb-8'>Sponsored</h2>
             </div>
