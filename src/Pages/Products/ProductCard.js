@@ -169,6 +169,7 @@ export default function ProductCard({ product }) {
                         </p>
                         <small className=' font-bold'>Price: ${resalePrice}</small><br />
                         <small className=' opacity-50'>Original Price: ${originalPrice}</small><br />
+                        <small className=' opacity-50'>Condition:{condition}</small><br />
                         <small className=' text-sm'>Used: {usedDays}</small> <br />
                         <div className='flex justify-between items-end my-2'>
                             {
