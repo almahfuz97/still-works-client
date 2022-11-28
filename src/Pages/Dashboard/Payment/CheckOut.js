@@ -1,13 +1,37 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import React, { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
+import React, { useContext, useEffect, useState } from 'react'
+import ErrorPage from '../../../Components/ErrorPage/ErrorPage';
+import Spinner from '../../../Components/Spinner/Spinner';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 export default function CheckOut({ order }) {
     const stripe = useStripe();
     const elements = useElements()
     const [cardError, setCardError] = useState('');
     const { resalePrice, customerEmail, customerName, _id } = order
+    const [success, setSuccess] = useState();
+    const [spin, setSpin] = useState(false);
+    const { user } = useContext(AuthContext);
 
     const [clientSecret, setClientSecret] = useState("");
+    const { data: myOrder = [], isLoading, isError, refetch } = useQuery({
+        queryKey: ['myOrders', user?.email, order._id],
+        queryFn: async () => {
+            try {
+                const res = await fetch(`${process.env.REACT_APP_url}/myOrders/${order._id}?email=${user?.email}`, {
+                    headers: {
+                        authorization: `bearer ${localStorage.getItem('still-works-token')}`
+                    }
+                });
+                const data = await res.json();
+                return data;
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    })
+    console.log(myOrder)
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
@@ -23,13 +47,19 @@ export default function CheckOut({ order }) {
 
     const handleSubmit = async (event) => {
         setCardError('')
+        setSuccess('');
+        setSpin(true)
         event.preventDefault();
         if (!stripe || !elements) {
+            setSpin(false)
             return;
         }
 
         const card = elements.getElement(CardElement);
-        if (card === null) return;
+        if (card === null) {
+            setSpin(false)
+            return
+        };
 
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
@@ -37,6 +67,7 @@ export default function CheckOut({ order }) {
         })
         if (error) {
             setCardError(error.message);
+            setSpin(false)
             console.log(error)
         }
 
@@ -54,6 +85,7 @@ export default function CheckOut({ order }) {
         );
         if (confirmError) {
             setCardError(confirmError.message);
+            setSpin(false)
             return;
         }
         console.log('payment intent:', paymentIntent);
@@ -77,14 +109,19 @@ export default function CheckOut({ order }) {
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
+                    setSuccess(paymentIntent.id)
+                    refetch();
+                    setSpin(false)
                 })
                 .catch(err => {
+                    setSpin(false)
                     console.log(err);
                 })
         }
     }
+    if (isLoading) return <Spinner />
     return (
-        <form onSubmit={handleSubmit} className='w-96 m-2 mt-4'>
+        <form onSubmit={handleSubmit} className='w-1/2  mt-4 border shadow rounded-lg p-2'>
             <CardElement
                 options={{
                     style: {
@@ -101,10 +138,27 @@ export default function CheckOut({ order }) {
                     },
                 }}
             />
-            <button className='bg-green-400 text-white px-2 py-1  rounded-lg' type="submit" disabled={!stripe || !clientSecret}>
-                Pay
-            </button>
-            <p className='text-red-500'>{cardError}</p>
+            {
+                spin ?
+                    <div className='btn flex justify-center w-full mt-4'>
+                        <div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'>
+                        </div>
+                    </div> :
+                    myOrder.isPaid ?
+                        <button className='bg-slate-400 text-white px-4 py-2 mt-4  rounded-lg' type="" disabled={!stripe || !clientSecret}>
+                            Paid
+                        </button>
+                        :
+                        <button className='bg-primary-color text-white px-4 py-2 mt-4  rounded-lg' type="submit" disabled={!stripe || !clientSecret}>
+                            Pay
+                        </button>
+            }
+
+            <p className='text-red-500 mt-4'>{cardError}</p>
+            {
+                success && <p>Your Transaction Id is:<span className=' text-primary-color mt-2'> {success}</span></p>
+
+            }
         </form>
     )
 }

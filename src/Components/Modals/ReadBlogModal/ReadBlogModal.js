@@ -18,6 +18,7 @@ export default function ReadBlogModal({ clicked, blog, handleClick }) {
                     handleClick(false)
                     setVisible(false)
                 }}
+
             >
                 <Modal.Header>
                     {blog.title}

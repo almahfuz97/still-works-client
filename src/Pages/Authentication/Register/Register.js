@@ -154,12 +154,12 @@ export default function Register() {
 
                         <p className=' text-center text-xs mt-2'>Already have an account?
                             <Link to='/login'><span className='ml-2 text-green-700'>Login here?</span></Link></p>
-                        <div className='flex justify-center items-center mt-4'>
+                        {/* <div className='flex justify-center items-center mt-4'>
                             <div className='h-px w-1/3 bg-slate-500'></div>
                             <div className='mx-2'>Or</div>
                             <div className=' h-px w-1/3 bg-slate-500'></div>
                         </div>
-                        <div onClick={handleGoogle} className="border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 text-center w-full mt-4">Sign In with Google</div>
+                        <div onClick={handleGoogle} className="border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 text-center w-full mt-4">Sign In with Google</div> */}
                     </form>
                 </div>
             </div>

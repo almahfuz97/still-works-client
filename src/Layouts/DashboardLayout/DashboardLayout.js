@@ -1,6 +1,6 @@
 import { async } from '@firebase/util';
-import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react'
+import { isError, useQuery } from '@tanstack/react-query';
+import React, { useContext, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Navbar from '../../Components/Navbar/Navbar'
 import Spinner from '../../Components/Spinner/Spinner';
@@ -8,8 +8,9 @@ import { AuthContext } from '../../Context/AuthProvider/AuthProvider'
 
 export default function DashboardLayout() {
     const { user, loading } = useContext(AuthContext);
+    const [showDashboard, setShowDashboard] = useState(false);
 
-    const { data: userInfo, isLoading, error } = useQuery({
+    const { data: userInfo, isLoading, isError } = useQuery({
         queryKey: ['users', user?.email],
         queryFn: async () => {
             try {
@@ -23,12 +24,52 @@ export default function DashboardLayout() {
     })
 
     if (isLoading) return <Spinner />
+    if (isError) return <div className="text-center">Something went wrong@</div>
     return (
         <div>
             <Navbar></Navbar>
 
-            <div className='grid grid-cols-12 mx-12'>
-                <div className=' border hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
+            <div className='relative'>
+                <button onClick={() => setShowDashboard(!showDashboard)} className='bg-primary-color p-2 rounded-r-2xl md:hidden flex text-white'>
+                    DashBoard
+                </button>
+                <div className={`absolute md:hidden rounded-lg shadow drop-shadow rounded-tl-none rounded-bl-none pt-2 uppercase text-white font-bold p-8 bg-slate-400 z-10 ${showDashboard ? 'flex' : 'hidden'}`}>
+                    <div>
+                        <p onClick={() => setShowDashboard(!showDashboard)}>
+                            <Link to='/dashboard/myOrders'>My Orders</Link>
+                        </p>
+                        <p>
+                            <Link to={`/dashboard/mywishlist/${user?.email}`}>My Wishlist</Link>
+                        </p>
+                        {
+                            userInfo.role === 'Seller'
+                                ?
+                                <>
+                                    <p onClick={() => setShowDashboard(!showDashboard)}>
+                                        <Link to='/dashboard/addproduct'>Add Product</Link>
+                                    </p>
+                                    <p>
+                                        <Link to='/dashboard/myProducts'>My Products</Link>
+                                    </p>
+                                </>
+                                :
+                                userInfo.role === 'admin'
+                                    ?
+                                    <>
+                                        <p onClick={() => setShowDashboard(!showDashboard)}>
+                                            <Link to='/dashboard/allSellers'>All Sellers</Link>
+                                        </p>
+                                        <p onClick={() => setShowDashboard(!showDashboard)}>
+                                            <Link to='/dashboard/allBuyers'>All  Buyers</Link>
+                                        </p>
+                                    </>
+                                    : ''
+                        }
+                    </div>
+                </div>
+            </div>
+            <div className='grid  grid-cols-12 mx-12'>
+                <div className=' hidden md:block md:col-span-4 space-y-6 lg:col-span-2'>
                     <p>
                         <Link to='/dashboard/myOrders'>My Orders</Link>
                     </p>
@@ -62,6 +103,7 @@ export default function DashboardLayout() {
 
 
                 </div>
+
                 <div className=' md:col-span-8 col-span-12 lg:col-span-10 border'>
                     <Outlet />
                 </div>
