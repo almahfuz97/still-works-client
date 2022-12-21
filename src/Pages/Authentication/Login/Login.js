@@ -89,8 +89,8 @@ export default function Login() {
     return (
         <div className='my-12 mx-4'>
             <div className='flex justify-center'>
-                <div className='w-96 shadow-lg -shadow-lg p-8 rounded-lg'>
-                    <h3 className='text-center mb-9'>Login</h3>
+                <div className='w-96 shadow-lg shadow-purple-400 -shadow-lg p-8 rounded-lg'>
+                    <h3 className='text-center mb-9 uppercase font-bold'>Login</h3>
                     <p className=' text-red-500'>{err}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label className=' text-sm' htmlFor="email">Email</label> <br />
@@ -103,7 +103,7 @@ export default function Login() {
                             {...register('password', { required: true })}
                         />
                         <small>Forgot password?</small>
-                        <p className=' text-red-500'> {errors?.email && 'Email is required'} </p>
+                        <p className=' text-red-500'> {errors?.password && 'Password is required'} </p>
                         {
                             spin ?
                                 <div className='btn flex justify-center w-full mt-4'>
