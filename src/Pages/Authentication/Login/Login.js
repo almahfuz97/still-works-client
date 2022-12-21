@@ -91,19 +91,19 @@ export default function Login() {
             <div className='flex justify-center'>
                 <div className='w-96 shadow-lg shadow-purple-400 -shadow-lg p-8 rounded-lg'>
                     <h3 className='text-center mb-9 uppercase font-bold'>Login</h3>
-                    <p className=' text-red-500'>{err}</p>
+                    <p className=' text-red-500 '>{err}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label className=' text-sm' htmlFor="email">Email</label> <br />
                         <input type="email" placeholder="Email" className="border py-2 px-2 rounded-lg w-full mb-3"
                             {...register('email', { required: true })}
                         />
-                        <p className=' text-red-500'> {errors?.email && 'Email is required'} </p>
+                        <p className='-mt-2 mb-2 text-xs text-red-500'> {errors?.email && 'Email is required'} </p>
                         <label htmlFor="password" className=' text-sm'>Password</label> <br />
                         <input type="password" placeholder="Password" className="  py-2 px-2 w-full border rounded-lg"
                             {...register('password', { required: true })}
                         />
-                        <small>Forgot password?</small>
-                        <p className=' text-red-500'> {errors?.password && 'Password is required'} </p>
+                        <p className=' text-red-500 text-xs mb-2'> {errors?.password && 'Password is required'} </p>
+
                         {
                             spin ?
                                 <div className='btn flex justify-center w-full mt-4'>
@@ -112,7 +112,7 @@ export default function Login() {
                                     </div>
                                 </div>
                                 :
-                                <input type="submit" className='btn border cursor-pointer hover:bg-slate-50 rounded-lg w-full mt-4 py-2 px-2' value="Login" />
+                                <input type="submit" className='btn border cursor-pointer hover:bg-slate-50 rounded-lg w-full uppercase mt-4 py-2 px-2' value="Login" />
 
                         }
                         <p className=' text-center text-xs mt-2'>New to Doctors Portal?

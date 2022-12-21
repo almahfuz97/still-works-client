@@ -109,20 +109,20 @@ export default function Register() {
     return (
         <div className='my-16 mx-4'>
             <div className='flex justify-center'>
-                <div className='w-96 shadow-lg -shadow-lg p-8 rounded-lg'>
-                    <h3 className='text-center mb-9'>Register</h3>
+                <div className='w-96 shadow-lg shadow-purple-400 -shadow-lg p-8 rounded-lg'>
+                    <h3 className='text-center mb-9 font-bold uppercase'>Register</h3>
                     <p className=' text-red-500 text-xs font-semibold'>{err}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <label className=' text-sm' htmlFor="fullName">Full Name</label> <br />
                         <input type="text" placeholder="Full Name" className="border rounded-lg p-2 input input-bordered w-full mb-3"
                             {...register('fullName', { required: true })}
                         />
-                        <p className=' text-red-500  text-xs'> {errors?.fullName && 'Full name is required!'} </p>
+                        <p className=' text-red-500  mb-2 -mt-2  text-xs'> {errors?.fullName && 'Full name is required!'} </p>
                         <label className=' text-sm' htmlFor="email">Email</label> <br />
                         <input type="email" placeholder="Email" className="border rounded-lg p-2 input input-bordered w-full mb-3"
                             {...register('email', { required: true })}
                         />
-                        <p className=' text-red-500  text-xs'> {errors?.email && 'Email is required'} </p>
+                        <p className=' text-red-500 mb-2 -mt-2  text-xs'> {errors?.email && 'Email is required'} </p>
                         <label htmlFor="password" className=' text-sm'>Password</label> <br />
                         <input type="password" placeholder="Password" className="border rounded-lg p-2 input input-bordered w-full"
                             {...register('password', {
@@ -132,7 +132,7 @@ export default function Register() {
                                 }
                             })}
                         />
-                        <p className=' text-red-500 text-xs'> {errors?.password && errors.password.message} </p>
+                        <p className=' text-red-500  mb-2 -mt-2 text-xs'> {errors?.password && errors.password.message} </p>
 
                         <p className=' mt-6 mb-2 font-semibold'>Account Type:</p>
                         <div className='flex items-center '>
@@ -148,12 +148,12 @@ export default function Register() {
                                     <div className='border-4 w-4 h-4 border-dashed bg-red-500 animate-spin rounded-full'>
                                     </div>
                                 </div>
-                                : <input type="submit" className='border p-2 rounded-lg hover:cursor-pointer hover:bg-slate-50 w-full mt-4' value="Register" />
+                                : <input type="submit" className='border p-2 uppercase rounded-lg hover:cursor-pointer hover:bg-slate-50 w-full mt-4' value="Register" />
 
                         }
 
                         <p className=' text-center text-xs mt-2'>Already have an account?
-                            <Link to='/login'><span className='ml-2 text-green-700'>Login here?</span></Link></p>
+                            <Link to='/login'><span className='ml-2 text-green-700'>Login here</span></Link></p>
                         {/* <div className='flex justify-center items-center mt-4'>
                             <div className='h-px w-1/3 bg-slate-500'></div>
                             <div className='mx-2'>Or</div>
